@@ -20,7 +20,7 @@ Requirements:
 Extract and summarize the key points of the article while maintaining clarity and accuracy.
 Provide a descriptive title for the summary.
 Ensure the summary is coherent, engaging, and easy to read, and stay on topic with no extra unrelated details.
-Output 3 plain text paragraphs that summarize the article.
+Output 1-3 plain text paragraphs that summarize the article.
 
 Example Output:
 {sample_news_summary}

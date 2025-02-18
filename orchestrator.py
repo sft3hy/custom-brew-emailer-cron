@@ -1,7 +1,3 @@
-import schedule
-import time
-import json
-import threading
 from utils.email_utils import send_email
 from utils.groq_utils import generate_summary, format_summaries
 from utils.news_utils import get_news
