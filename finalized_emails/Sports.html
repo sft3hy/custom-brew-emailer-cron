@@ -1,13 +1,4 @@
-from groq import Groq
-import newspaper
-import os
-from config import news_summarizer_system_prompt, SUMMARIZER_MODEL
 
-client = Groq(
-    api_key=os.environ.get("GROQ_API_KEY"),
-)
-
-blank_html_string = """
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,8 +12,6 @@ blank_html_string = """
             background-color: #f4f4f4;
         }
         .container {
-            width: 100%;
-            margin: 0 auto;
             max-width: 600px;
             background: #ffffff;
             padding: 5px;
@@ -81,66 +70,10 @@ blank_html_string = """
 <body>
     <div class="container">
         
-"""
-
-def input_html_news(news_summaries: list, topic: str):
-    html_to_input = f"<title>{topic} Custom Brew ☕️</title>"
-    html_to_input += f'<div class="header">{topic} Custom Brew ☕️</div>'
-    html_to_input += '<div class="content">'
-    for article in news_summaries:
-        html_to_input += f"<h2>{article['title']}</h2>"
-        html_to_input += f"""
-            <div class='img-container'>
-                <img src='{article['urlToImage']}' alt="{article['description']}" width='1080' height='700'>
-            </div>
-        """
-        html_to_input += f"<p>{article['summary']}</p><hr>" 
-    html_to_input += """</div>
+<title>Sports Custom Brew ☕️</title><div class="header">Sports Custom Brew ☕️</div><div class="content"></div>
     <div class="footer">
             LLM generated summaries - please verify facts.
         </div>
     </div>
 </body>
 </html>
-"""
-    final_output = blank_html_string + html_to_input
-    return final_output
-
-    
-
-def extract_news_text(url):
-    try:
-        print(f"scraping {url}")
-        article = newspaper.article(url)
-        if article.text is None or article.text == "":
-            return None
-        return article.text
-    except Exception as e:
-        return None
-
-
-def generate_summary(article_url: str) -> str:
-    article = extract_news_text(article_url)
-    if article is None:
-        return None
-    print(f"generating summary for {article_url}")
-    print()
-    chat_completion = client.chat.completions.create(
-    messages=[
-        {
-            "role": "system",
-            "content": news_summarizer_system_prompt,
-        },
-        {
-            "role": "user",
-            "content": f"summarize this article in an engaging tone: {article}",
-        }
-    ],
-    model=SUMMARIZER_MODEL,
-    )
-    response = str(chat_completion.choices[0].message.content)
-    paragraphs = response.split('\n\n')
-    cleaned_html_output = ""
-    for p in paragraphs:
-        cleaned_html_output += f"<p>{p}</p>"
-    return cleaned_html_output

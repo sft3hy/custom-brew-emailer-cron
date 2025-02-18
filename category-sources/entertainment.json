@@ -1,0 +1,59 @@
+{
+    "status": "ok",
+    "sources": [
+        {
+            "id": "buzzfeed",
+            "name": "Buzzfeed",
+            "description": "BuzzFeed is a cross-platform, global network for news and entertainment that generates seven billion views each month.",
+            "url": "https://www.buzzfeed.com",
+            "category": "entertainment",
+            "language": "en",
+            "country": "us"
+        },
+        {
+            "id": "entertainment-weekly",
+            "name": "Entertainment Weekly",
+            "description": "Online version of the print magazine includes entertainment news, interviews, reviews of music, film, TV and books, and a special area for magazine subscribers.",
+            "url": "http://www.ew.com",
+            "category": "entertainment",
+            "language": "en",
+            "country": "us"
+        },
+        {
+            "id": "ign",
+            "name": "IGN",
+            "description": "IGN is your site for Xbox One, PS4, PC, Wii-U, Xbox 360, PS3, Wii, 3DS, PS Vita and iPhone games with expert reviews, news, previews, trailers, cheat codes, wiki guides and walkthroughs.",
+            "url": "http://www.ign.com",
+            "category": "entertainment",
+            "language": "en",
+            "country": "us"
+        },
+        {
+            "id": "mashable",
+            "name": "Mashable",
+            "description": "Mashable is a global, multi-platform media and entertainment company.",
+            "url": "https://mashable.com",
+            "category": "entertainment",
+            "language": "en",
+            "country": "us"
+        },
+        {
+            "id": "mtv-news",
+            "name": "MTV News",
+            "description": "The ultimate news source for music, celebrity, entertainment, movies, and current events on the web. It's pop culture on steroids.",
+            "url": "http://www.mtv.com/news",
+            "category": "entertainment",
+            "language": "en",
+            "country": "us"
+        },
+        {
+            "id": "polygon",
+            "name": "Polygon",
+            "description": "Polygon is a gaming website in partnership with Vox Media. Our culture focused site covers games, their creators, the fans, trending stories and entertainment news.",
+            "url": "http://www.polygon.com",
+            "category": "entertainment",
+            "language": "en",
+            "country": "us"
+        }
+    ]
+}

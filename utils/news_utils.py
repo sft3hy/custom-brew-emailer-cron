@@ -11,7 +11,6 @@ def get_news(topic: str):
     }
 
     response = requests.get(url, params=params)
-    print(response)
     print("Gathered news articles")
 
     if response.status_code == 200:
