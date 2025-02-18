@@ -27,5 +27,7 @@ jobs:
             CUSTOM_BREW_EMAIL_PASSWORD: ${{ secrets.CUSTOM_BREW_EMAIL_PASSWORD }}
             NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
             GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-            GOOGLE_SHEETS_CREDENTIALS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
+            GOOGLE_SHEETS_PRIVATE_KEY: ${{ secrets.GOOGLE_SHEETS_PRIVATE_KEY }}
+            GOOGLE_SHEETS_CLIENT_ID: ${{ secrets.GOOGLE_SHEETS_CLIENT_ID }}
+            GOOGLE_SHEETS_PRIVATE_KEY_ID: ${{ secrets.GOOGLE_SHEETS_PRIVATE_KEY_ID }}
         run: python orchestrator.py
