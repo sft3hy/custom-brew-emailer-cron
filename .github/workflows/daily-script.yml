@@ -25,4 +25,4 @@ jobs:
       - name: Run auto-emailer
         env:
             EMAIL_PASSWORD: ${{ secrets.CUSTOM_BREW_EMAIL_PASSWORD }}
-        run: python emailer.py
+        run: python orchestrator.py
