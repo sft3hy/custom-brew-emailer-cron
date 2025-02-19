@@ -89,11 +89,12 @@ def input_html_news(news_summaries: list, topic: str):
     html_to_input += '<div class="content">'
     for article in news_summaries:
         html_to_input += f"<h2>{article['title']}</h2>"
-        html_to_input += f"""
-            <div class='img-container'>
-                <img src='{article['urlToImage']}' alt="{article['description']}" width='1080' height='700'>
-            </div>
-        """
+        if 'urlToImage' and 'description' in article:
+            html_to_input += f"""
+                <div class='img-container'>
+                    <img src='{article['urlToImage']}' alt="{article['description']}" width='1080' height='700'>
+                </div>
+            """
         html_to_input += f"<p>{article['summary']}</p><hr>" 
     html_to_input += """</div>
     <div class="footer">

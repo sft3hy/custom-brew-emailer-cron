@@ -9,8 +9,8 @@ dummy = [{'source': {'id': 'the-washington-post', 'name': 'The Washington Post'}
 # Function to test sending emails
 def send_email_tester(email, topic):
     print(f"Generating email for {email} about {topic}")
-    # news_info = get_news(topic=topic)
-    news_info = dummy
+    news_info = get_news(topic=topic)
+    # news_info = dummy
     articles = []
     for article in news_info:
         article_info = {}
@@ -33,11 +33,11 @@ entertainment = [{'source': {'id': 'cnn', 'name': 'CNN'}, 'author': 'Alli Rosenb
 def orchestrate():
     for topic in topics:
         news_info = []
-        # news_info = get_news(topic)
-        if topic == "Business":
-            news_info = business
-        elif topic == "Entertainment":
-            news_info = entertainment
+        news_info = get_news(topic)
+        # if topic == "Business":
+        #     news_info = business
+        # elif topic == "Entertainment":
+        #     news_info = entertainment
         articles = []
         for article in news_info:
             article_info = {}
@@ -48,8 +48,9 @@ def orchestrate():
                 article_summary = article_summary.replace('**', '')
                 article_info['summary'] = f"""{article_summary} <a href='{article["url"]}' target="_blank">{article["title"]}</a><br>"""
                 article_info['title'] = article['title']
-                article_info['description'] = article['description']
-                article_info['urlToImage'] = article['urlToImage']
+                if 'description' and 'urlToImage' in article.keys():
+                    article_info['description'] = article['description']
+                    article_info['urlToImage'] = article['urlToImage']
                 articles.append(article_info)
         formatted_email = input_html_news(news_summaries=articles, topic=topic)
         finalized_emails[topic] = formatted_email
