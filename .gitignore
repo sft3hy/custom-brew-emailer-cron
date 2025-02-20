@@ -2,3 +2,4 @@
 *.pyc
 # ignore all __pycache__ directories
 __pycache__/
+finalized_emails/*

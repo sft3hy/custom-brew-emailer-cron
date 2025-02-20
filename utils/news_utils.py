@@ -1,4 +1,4 @@
-from config import NEWS_API_KEY, SUMMARY_COUNT
+from config import NEWS_API_KEY, ARTICLE_COUNT
 import requests
 
 def get_news(topic: str):
@@ -16,9 +16,9 @@ def get_news(topic: str):
     if response.status_code == 200:
         data = response.json()
         articles = data.get("articles", [])
-        if len(articles) > SUMMARY_COUNT:
-            articles = articles[:SUMMARY_COUNT]
-        print(articles)
+        if len(articles) > ARTICLE_COUNT:
+            articles = articles[:ARTICLE_COUNT]
+        print(f"# articles returned for {topic}: {len(articles)}")
         return [
             {
                 "title": article["title"],

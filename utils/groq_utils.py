@@ -1,7 +1,10 @@
 from groq import Groq
+import groq
 import newspaper
 import os
-from config import news_summarizer_system_prompt, SUMMARIZER_MODEL
+import json
+from config import news_summarizer_system_prompt, SUMMARIZER_MODEL, CURATOR_MODEL, news_headline_picker_sys_prompt
+import time
 
 client = Groq(
     api_key=os.environ.get("GROQ_API_KEY"),
@@ -120,7 +123,56 @@ def extract_news_text(url):
         return article.text
     except Exception as e:
         return None
+    
+def message_creator(sys_prompt: str, input_dict: dict):
+    messages=[
+            {
+                "role": "system",
+                "content": sys_prompt,
+            },
+            {
+                "role": "user",
+                "content": str(input_dict),
+            }
+        ]
+    return messages
 
+def curate_news(headlines: list, topic: str):
+    print("Curating headlines")
+    try:
+        chat_completion = client.chat.completions.create(
+        messages=message_creator(sys_prompt=news_headline_picker_sys_prompt,
+                                 input_dict={
+                                    "headlines": headlines,
+                                    "topic": topic,
+                                    }
+                                ),
+        model=CURATOR_MODEL,
+        response_format={
+            "type": "json_object"
+        },
+        )
+    # see if chat_completion returns an error code
+    except groq.InternalServerError as e:
+        print(f"Internal Server Error: {e}")
+        print("trying again...")
+        time.sleep(3)
+        chat_completion = client.chat.completions.create(
+        messages=message_creator(sys_prompt=news_headline_picker_sys_prompt,
+                                 input_dict={
+                                    "headlines": headlines,
+                                    "topic": topic,
+                                    }
+                                ),
+        model=CURATOR_MODEL,
+        response_format={
+            "type": "json_object"
+        },
+        )
+    response = json.loads(str(chat_completion.choices[0].message.content))
+    print(f"headlines: {str(response)}")
+
+    return response
 
 def generate_summary(article_url: str) -> str:
     article = extract_news_text(article_url)

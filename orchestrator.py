@@ -1,5 +1,5 @@
 from utils.email_utils import send_email
-from utils.groq_utils import generate_summary, input_html_news
+from utils.groq_utils import generate_summary, input_html_news, curate_news
 from utils.news_utils import get_news
 from utils.gsheet_utils import get_all_user_data
 from datetime import datetime
@@ -9,10 +9,11 @@ dummy = [{'source': {'id': 'the-washington-post', 'name': 'The Washington Post'}
 # Function to test sending emails
 def send_email_tester(email, topic):
     print(f"Generating email for {email} about {topic}")
-    news_info = get_news(topic=topic)
+    a_bunch_of_news = get_news(topic=topic)
+    curated_articles = curate_news(a_bunch_of_news, topic)
     # news_info = dummy
     articles = []
-    for article in news_info:
+    for article in curated_articles:
         article_info = {}
         article_info['summary'] = f"""{generate_summary(article['url']).replace('**', '')} <br><br> <a href='{article["url"]}' target="_blank">{article["title"]}</a><br>"""
         article_info['title'] = article['title']
@@ -32,14 +33,21 @@ business = [{'source': {'id': 'cnn', 'name': 'CNN'}, 'author': None, 'title': 'U
 entertainment = [{'source': {'id': 'cnn', 'name': 'CNN'}, 'author': 'Alli Rosenbloom', 'title': 'Blake Lively and Ryan Reynolds step out for ‘SNL’ 50th anniversary special amid Justin Baldoni legal battle - Yahoo Entertainment', 'description': 'Blake Lively and Ryan Reynolds appeared on Sunday night ahead of the “Saturday Night Live” 50th anniversary special in New York City, marking their first joint red carpet appearance since their legal dispute with Justin Baldoni began.', 'url': 'https://www.cnn.com/2025/02/16/entertainment/blake-lively-ryan-reynolds-snl/index.html', 'urlToImage': 'https://media.cnn.com/api/v1/images/stellar/prod/ap25048032096681.jpg?c=16x9&q=w_800,c_fill', 'publishedAt': '2025-02-17T01:30:00Z', 'content': 'Blake Lively and Ryan Reynolds on Sunday made their first joint red carpet appearance since the start of their legal dispute with Justin Baldoni.\r\nThe couple were seen posing for photos together on t… [+1726 chars]'}, {'source': {'id': None, 'name': 'Hindustan Times'}, 'author': 'AP', 'title': "Paul Simon and Sabrina Carpenter open the 'Saturday Night Live' 50th anniversary celebration - Hindustan Times", 'description': "Paul Simon and Sabrina Carpenter open the 'Saturday Night Live' 50th anniversary celebration", 'url': 'https://www.hindustantimes.com/world-news/us-news/paul-simon-and-sabrina-carpenter-open-the-saturday-night-live-50th-anniversary-celebration-101739754782603.html', 'urlToImage': 'https://www.hindustantimes.com/ht-img/img/2024/12/18/1600x900/World_2_1734523138451_1734523182285.jpg', 'publishedAt': '2025-02-17T01:13:02Z', 'content': "NEW YORK Paul Simon and Sabrina Carpenter opened the 50th anniversary special celebrating Saturday Night Live with a duet of his song Homeward Bound. \r\nPaul Simon and Sabrina Carpenter open the 'Satu… [+4746 chars]"}, {'source': {'id': None, 'name': 'Billboard'}, 'author': 'Keith Caulfield', 'title': 'Kendrick Lamar’s ‘GNX’ Returns to No. 1 on Billboard 200 Chart - Billboard', 'description': "Kendrick Lamar's 'GNX' jumps back to No. 1 on the Billboard 200 after his Super Bowl halftime show, while two more Lamar albums return to the top 10.", 'url': 'http://www.billboard.com/music/chart-beat/kendrick-lamar-gnx-returns-number-one-billboard-200-super-bowl-1235903744/', 'urlToImage': 'https://www.billboard.com/wp-content/uploads/2025/02/00-kendrick-lamar-super-bowl-lix-halftime-show-2025-billboard-1548.jpg?w=1024', 'publishedAt': '2025-02-17T00:00:25Z', 'content': 'Kendrick Lamar’s GNX jumps back to No. 1 on the Billboard 200 albums chart, for a second week atop the list (rising 4-1 on the survey dated Feb. 22), following his Super Bowl halftime show (Feb. 9) a… [+4753 chars]'}]
 def orchestrate():
     for topic in topics:
-        news_info = []
-        news_info = get_news(topic)
+        curated_articles = []
+        a_bunch_of_news = get_news(topic=topic)
+        headlines = [article['title'] for article in a_bunch_of_news]
+        best_headlines = curate_news(headlines, topic)["handpicked_headlines"]
+        for article in a_bunch_of_news:
+            if article['title'] in best_headlines:
+                curated_articles.append(article)
+        print(f"Curated articles in orchestrator.py: {curated_articles}")
+        # for article in curated_articles:
         # if topic == "Business":
         #     news_info = business
         # elif topic == "Entertainment":
         #     news_info = entertainment
         articles = []
-        for article in news_info:
+        for article in curated_articles:
             article_info = {}
             article_summary = generate_summary(article['url'])
             if article_summary is None:
