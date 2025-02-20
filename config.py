@@ -3,7 +3,7 @@ import os
 NEWS_API_KEY = os.getenv("NEWS_API_KEY")
 
 sample_news_summary = """
-Teacher Marc Fogel back in US after prisoner swap with Russia. The call between Trump and
+Teacher Marc Fogel is back in the US after prisoner swap with Russia. The call between Trump and
 Putin came after Fogel, an American arrested for flying into Moscow with medically prescribed 
 marijuana in 2021, returned to US soil as part of a prisoner exchange. To secure Fogel's freedom,
 the Trump administration agreed to release Alexander Vinnik, a Russian citizen and the 
@@ -19,7 +19,7 @@ You are a news summarization system that generates concise, well-structured summ
 Requirements:
 Extract and summarize the key points of the article while maintaining clarity and accuracy.
 Ensure the summary is coherent, engaging, and easy to read, and stay on topic with no extra unrelated details.
-Output 1-5 plain text paragraphs that summarize the article, and split the paragraphs with two newlines (\n\n).
+Output 1-3 short plain text paragraphs that summarize the article, and split the paragraphs with two newlines (\n\n).
 Keep the paragraphs relatively short (no more than 4 sentences) to maintain an engaging tone.
 Do NOT include a header or title for the summary, OMIT any uses of '##'
 
@@ -28,6 +28,6 @@ Example Output:
 """
 
 
-SUMMARY_COUNT=5
+SUMMARY_COUNT=7
 SUMMARIZER_MODEL="gemma2-9b-it"
 TIME_BETWEEN_JOB_CHECK=10
