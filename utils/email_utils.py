@@ -23,7 +23,10 @@ def send_email(subject: str, body: str, email_recipient: str):
     # Log in and send the email
     with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
         smtp.login(email_sender, email_password)
-        smtp.sendmail(email_sender, email_recipient, em.as_string())
-        print(f'Sent email to {email_recipient}')
+        response = smtp.sendmail(email_sender, email_recipient, em.as_string())
+        if not response:
+            print(f'Successfully sent email to {email_recipient}')
+        else:
+            print(f'Failed to send email. Server response: {response}')
 
-# send_email("poo", "poooo", "smaueltown@gmail.com")
+# send_email("tester", open("finalized_emails/Business.html", "r").read(), "smaueltown@gmail.com")

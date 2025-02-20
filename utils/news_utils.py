@@ -24,7 +24,8 @@ def get_news(topic: str):
                 "title": article["title"],
                 "description": article["description"],
                 "url": article["url"],
-                "publishedAt": article["publishedAt"]
+                "publishedAt": article["publishedAt"],
+                "urlToImage": article["urlToImage"]
             }
             for article in articles
         ]

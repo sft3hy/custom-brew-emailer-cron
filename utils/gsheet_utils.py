@@ -29,7 +29,7 @@ def update_sheet(email: str, frequency: str, topic: str):
     # Add a new row to the sheet
     row = [email, frequency, topic]  # Data to insert
     sheet.append_row(row)
-    print(f"Row added successfully!: {row}")
+    print(f"User added successfully!: {row}")
 
 
 def get_all_user_data():

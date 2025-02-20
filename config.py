@@ -22,6 +22,7 @@ Ensure the summary is coherent, engaging, and easy to read, and stay on topic wi
 Output 1-3 short plain text paragraphs that summarize the article, and split the paragraphs with two newlines (\n\n).
 Keep the paragraphs relatively short (no more than 4 sentences) to maintain an engaging tone.
 Do NOT include a header or title for the summary, OMIT any uses of '##'
+If the text you receive is a paywall or any other non-news article text, return the string "NONE"
 
 Example Output:
 {sample_news_summary}

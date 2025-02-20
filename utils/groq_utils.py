@@ -88,8 +88,10 @@ def input_html_news(news_summaries: list, topic: str):
     html_to_input += f'<div class="header">{topic} Custom Brew ☕️</div>'
     html_to_input += '<div class="content">'
     for article in news_summaries:
+        print(article)
+        print()
         html_to_input += f"<h2>{article['title']}</h2>"
-        if 'urlToImage' and 'description' in article:
+        if 'urlToImage' in article.keys() and 'description' in article.keys():
             html_to_input += f"""
                 <div class='img-container'>
                     <img src='{article['urlToImage']}' alt="{article['description']}" width='1080' height='700'>
@@ -125,7 +127,6 @@ def generate_summary(article_url: str) -> str:
     if article is None:
         return None
     print(f"generating summary for {article_url}")
-    print()
     chat_completion = client.chat.completions.create(
     messages=[
         {
@@ -140,6 +141,8 @@ def generate_summary(article_url: str) -> str:
     model=SUMMARIZER_MODEL,
     )
     response = str(chat_completion.choices[0].message.content)
+    if response == "NONE":
+        return None
     paragraphs = response.split('\n\n')
     cleaned_html_output = ""
     for p in paragraphs:
