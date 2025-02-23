@@ -91,8 +91,6 @@ def input_html_news(news_summaries: list, topic: str):
     html_to_input += f'<div class="header">{topic} Custom Brew ☕️</div>'
     html_to_input += '<div class="content">'
     for article in news_summaries:
-        print(article)
-        print()
         html_to_input += f"<h2>{article['title']}</h2>"
         if 'urlToImage' in article.keys() and 'description' in article.keys():
             html_to_input += f"""
@@ -103,11 +101,8 @@ def input_html_news(news_summaries: list, topic: str):
         html_to_input += f"<p>{article['summary']}</p><hr>" 
     html_to_input += """</div>
     <div class="footer">
-            LLM generated summaries - please verify facts.
-        </div>
-    </div>
-</body>
-</html>
+        LLM generated summaries - please verify facts.
+    
 """
     final_output = blank_html_string + html_to_input
     return final_output
@@ -170,7 +165,6 @@ def curate_news(headlines: list, topic: str):
         },
         )
     response = json.loads(str(chat_completion.choices[0].message.content))
-    print(f"headlines: {str(response)}")
 
     return response
 

@@ -4,4 +4,3 @@ articles = []
 for article in news:
     articles.append(article['title'])
 
-print(articles)

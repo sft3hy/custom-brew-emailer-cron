@@ -7,7 +7,7 @@ import os
 email_sender = 'custombrew1@gmail.com'
 email_password = os.environ['CUSTOM_BREW_EMAIL_PASSWORD']
 
-def send_email(subject: str, body: str, email_recipient: str):
+def send_email(subject: str, body: str, email_recipient: str, topic: str):
     # Create email message
     em = EmailMessage()
     em['From'] = "Custom Brew"
@@ -15,6 +15,12 @@ def send_email(subject: str, body: str, email_recipient: str):
     em['Subject'] = subject
 
     # Set email content as HTML
+    unsubscribe_link = f"""<br><a href="https://custom-brew.streamlit.app/Unsubscribe?email={email_recipient}&topic={topic}" target="_blank">Unsubscribe</a>
+    </div>
+    </div>
+</body>
+</html>"""
+    body = body + unsubscribe_link
     em.add_alternative(body, subtype='html')
 
     # Add SSL (layer of security)
@@ -29,4 +35,4 @@ def send_email(subject: str, body: str, email_recipient: str):
         else:
             print(f'Failed to send email. Server response: {response}')
 
-# send_email("tester", open("finalized_emails/Business.html", "r").read(), "smaueltown@gmail.com")
+# send_email("tester", open("finalized_emails/Business.html", "r").read(), "smaueltown@gmail.com", topic="Business")
