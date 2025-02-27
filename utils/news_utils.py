@@ -18,7 +18,7 @@ def get_news(topic: str):
         articles = data.get("articles", [])
         if len(articles) > ARTICLE_COUNT:
             articles = articles[:ARTICLE_COUNT]
-        print(f"# articles returned for {topic}: {len(articles)}")
+        print(f"Articles returned for {topic}: {len(articles)}")
         return [
             {
                 "title": article["title"],

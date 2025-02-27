@@ -3,7 +3,7 @@ import groq
 import newspaper
 import os
 import json
-from config import news_summarizer_system_prompt, SUMMARIZER_MODEL, CURATOR_MODEL, news_headline_picker_sys_prompt
+from config import news_summarizer_system_prompt, SUMMARIZER_MODEL, CURATOR_MODEL, news_headline_picker_sys_prompt, ARTICLE_CHAR_LIMIT
 import time
 
 client = Groq(
@@ -111,7 +111,6 @@ def input_html_news(news_summaries: list, topic: str):
 
 def extract_news_text(url):
     try:
-        print(f"scraping {url}")
         article = newspaper.article(url)
         if article.text is None or article.text == "":
             return None
@@ -172,21 +171,27 @@ def generate_summary(article_url: str) -> str:
     article = extract_news_text(article_url)
     if article is None:
         return None
-    print(f"generating summary for {article_url}")
-    chat_completion = client.chat.completions.create(
-    messages=[
-        {
-            "role": "system",
-            "content": news_summarizer_system_prompt,
-        },
-        {
-            "role": "user",
-            "content": f"summarize this article in an engaging tone: {article}",
-        }
-    ],
-    model=SUMMARIZER_MODEL,
-    )
-    response = str(chat_completion.choices[0].message.content)
+    if len(article) > ARTICLE_CHAR_LIMIT:
+        article = article[:ARTICLE_CHAR_LIMIT]
+    print(f"article character count:", len(article))
+    try:
+        chat_completion = client.chat.completions.create(
+        messages=[
+            {
+                "role": "system",
+                "content": news_summarizer_system_prompt,
+            },
+            {
+                "role": "user",
+                "content": f"summarize this article in an engaging tone: {article}",
+            }
+        ],
+        model=SUMMARIZER_MODEL,
+        )
+        response = str(chat_completion.choices[0].message.content)
+    except Exception as e:
+        print(e)
+        return None
     if response == "NONE":
         return None
     paragraphs = response.split('\n\n')
